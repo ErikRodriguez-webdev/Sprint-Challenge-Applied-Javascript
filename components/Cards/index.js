@@ -21,44 +21,46 @@
 axios
   .get("https://lambda-times-backend.herokuapp.com/articles")
   .then((response) => {
-    console.log(response);
-    const cardEntry = document.querySelector(".cards-containe");
-    Object.entries(response.data.articles).forEach((item) => {
-      cardEntry.append(cardComponent(item));
+    const cardEntry = document.querySelector(".cards-container");
+    //console.log(response);
+    const newDataArray = Object.entries(response.data.articles);
+    //console.log(newDataArray);
+    newDataArray.forEach((theOnes) => {
+      const allTopicArray = theOnes[1];
+      //console.log(allTopicArray);
+      allTopicArray.forEach((item) => {
+        cardEntry.append(cardComponent(item));
+      });
     });
   })
   .catch((error) => {
     console.log(`This is a http error: ${error}`);
   });
 
-function cardComponent(array) {
-  for (let i = 0; i < array.length; i++) {
-    for (let a = 0; a < array.length; a++) {
-      const outerCard = document.createElement("div");
-      const cardHeader = document.createElement("div");
-      const cardAuthor = document.createElement("div");
-      const cardImgContainer = document.createElement("div");
-      const cardImage = document.createElement("img");
-      const cardSpan = document.createElement("span");
+function cardComponent(obj) {
+  var outerCard = document.createElement("div");
+  var cardHeader = document.createElement("div");
+  var cardAuthor = document.createElement("div");
+  var cardImgContainer = document.createElement("div");
+  var cardImage = document.createElement("img");
+  cardSpan = document.createElement("span");
 
-      outerCard.classList = "card";
-      cardHeader.classList = "headline";
-      cardAuthor.classList = "author";
-      cardImgContainer.classList = "img-container";
+  outerCard.classList = "card";
+  cardHeader.classList = "headline";
+  cardAuthor.classList = "author";
+  cardImgContainer.classList = "img-container";
 
-      cardImage.src = array[i][1][a].authorPhoto;
+  cardImage.src = obj.authorPhoto;
 
-      cardHeader.textContent = array[i][1][a].headline;
+  cardHeader.textContent = obj.headline;
 
-      cardSpan.textContent = `By ${array[i][1][a].authorName}`;
+  cardSpan.textContent = `By ${obj.authorName}`;
 
-      outerCard.append(cardHeader);
-      outerCard.append(cardAuthor);
-      cardAuthor.append(cardImgContainer);
-      cardImgContainer.append(cardImage);
-      cardAuthor.append(cardSpan);
-    }
-  }
+  outerCard.append(cardHeader);
+  outerCard.append(cardAuthor);
+  cardAuthor.append(cardImgContainer);
+  cardImgContainer.append(cardImage);
+  cardAuthor.append(cardSpan);
 
   return outerCard;
 }
